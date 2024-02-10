@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        let prevValue = 0;
+        let currentOp;
+
+        function onClick(value) {
+            switch (value) {
+                case 'c':
+                    setDisplay('');
+                    setPrevDisplay('');
+                    currentOp = null;
+                    prevValue = 0;
+                    break;
+                case '=':
+                    calculate(currentOp);
+                    setPrevDisplay('');
+                    currentOp = null;
+                    break;
+                case '.':
+                    if (!getDisplay().includes('.')) {
+                        setDisplay(getDisplay() + '.');
+                    }
+                    break;
+                default:
+                    if (currentOp != null) {
+                        calculate(currentOp)
+                    }
+
+                    prevValue = Number(getDisplay());
+                    currentOp = value;
+                    setPrevDisplay(prevValue + currentOp);
+                    setDisplay('');
+            }
+        }
+        function calculate(op) {
+            let currentDisplayValue = Number(getDisplay());
+            let calculatedValue = currentDisplayValue;
+            switch (op) {
+                case '+':
+                    calculatedValue = currentDisplayValue + prevValue;
+                    break;
+                case '-':
+                    calculatedValue = prevValue - currentDisplayValue;
+                    break;
+                case '*':
+                    calculatedValue = currentDisplayValue * prevValue;
+                    break;
+                case '/':
+                    calculatedValue = prevValue / currentDisplayValue;
+                    break;
+            }
+            appendToLog(prevValue + op + currentDisplayValue + '=' + calculatedValue)
+            setDisplay(calculatedValue);
+        }
+        function appendToLog(string) {
+            document.getElementById("log").innerHTML = "<p>" + string + "</p>" + document.getElementById("log").innerHTML;
+        }
+        function onClickNum(value) {
+            setDisplay(getDisplay() + value);
+        }
+        function getDisplay() {
+            return document.getElementById("display").innerHTML;
+        }
+        function setDisplay(newValue) {
+            return document.getElementById("display").innerHTML = newValue;
+        }
+        function setPrevDisplay(newValue) {
+            return document.getElementById("prevDisplay").innerHTML = newValue;
+        }
+    </script>
+    <title>Calculator!</title>
+</head>
+
+<body>
+    <h2>Calculator</h2>
+    <div>
+
+        <div id="prevDisplay"> </div>
+        <div id="display"> </div>
+
+        <div>
+            <button type="button" onclick="onClick('/')" id="/">/</button>
+            <button type="button" onclick="onClick('*')" id="*">*</button>
+            <button type="button" onclick="onClick('c')" id="c">c</button>
+        </div>
+        <div>
+            <button type="button" onclick="onClickNum(7)" id="7">7</button>
+            <button type="button" onclick="onClickNum(8)" id="8">8</button>
+            <button type="button" onclick="onClickNum(9)" id="9">9</button>
+            <button type="button" onclick="onClick('-')" id="-">-</button>
+        </div>
+        <div>
+            <button type="button" onclick="onClickNum(4)" id="4">4</button>
+            <button type="button" onclick="onClickNum(5)" id="5">5</button>
+            <button type="button" onclick="onClickNum(6)" id="6">6</button>
+            <button type="button" onclick="onClick('+')" id="+">+</button>
+        </div>
+        <div>
+            <button type="button" onclick="onClickNum(1)" id="1">1</button>
+            <button type="button" onclick="onClickNum(2)" id="2">2</button>
+            <button type="button" onclick="onClickNum(3)" id="3">3</button>
+            <button type="button" onclick="onClick('=')" id="=">=</button>
+        </div>
+        <div>
+            <button type="button" onclick="onClickNum(0)" id="0">0</button>
+            <button type="button" onclick="onClick('.')" id=".">.</button>
+        </div>
+        <div id="log"></div>
+    </div>
+</body>
+
+</html>
